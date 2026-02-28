@@ -4,6 +4,7 @@ Django settings for dodo_shop project.
 
 from pathlib import Path
 import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -99,6 +100,10 @@ LOGOUT_REDIRECT_URL = '/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+DATABASES = {
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+}
 #from django.contrib.auth import get_user_model
 
 #try:
