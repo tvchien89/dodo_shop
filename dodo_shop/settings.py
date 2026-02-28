@@ -98,11 +98,11 @@ LOGOUT_REDIRECT_URL = '/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-from django.contrib.auth import get_user_model
+#from django.contrib.auth import get_user_model
 
-try:
-    User = get_user_model()
-    User.objects.filter(username="tongchien").delete()
-    User.objects.create_superuser("tongchien", "tvchien89@gmail.com", "Tongvanchien89")
-except:
-    pass
+#try:
+#    User = get_user_model()
+#    User.objects.filter(username="tongchien").delete()
+#    User.objects.create_superuser("tongchien", "tvchien89@gmail.com", "Tongvanchien89")
+#except:
+#   pass
