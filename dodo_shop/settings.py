@@ -95,7 +95,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-<<<<<<< HEAD
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -107,6 +106,3 @@ try:
     User.objects.create_superuser("tongchien", "tvchien89@gmail.com", "Tongvanchien89")
 except:
     pass
-=======
-STATIC_ROOT = BASE_DIR / 'staticfiles'
->>>>>>> a7f0e0bea26b14b3f2c6393ed2959743521440e3
