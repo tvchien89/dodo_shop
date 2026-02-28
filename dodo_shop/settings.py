@@ -94,14 +94,23 @@ LOGOUT_REDIRECT_URL = '/'
 # ================= CLOUDINARY FIX =================
 
 import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
+# Cloudinary sẽ tự đọc từ biến môi trường CLOUDINARY_URL trên Render
 cloudinary.config(
-    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
-    api_key=os.environ.get("CLOUDINARY_API_KEY"),
-    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
     secure=True
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ==================================================
+
+#from django.contrib.auth import get_user_model
+
+#try:
+#    User = get_user_model()
+#    User.objects.filter(username="tongchien").delete()
+#    User.objects.create_superuser("tongchien", "tvchien89@gmail.com", "Tongvanchien89")
+#except:
+#   pass
