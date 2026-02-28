@@ -6,6 +6,7 @@ from pathlib import Path
 import os
 import dj_database_url
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ============== MEDIA FIX ===============
@@ -104,6 +105,17 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DATABASES = {
     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name = "dxaes2ckr",
+    api_key = "777568142783761",
+    api_secret = "DÁN_API_SECRET_CỦA_BẠN_VÀO_ĐÂY",
+    secure = True
+)
+
+
 #from django.contrib.auth import get_user_model
 
 #try:
