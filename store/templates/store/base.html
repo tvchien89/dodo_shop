@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 {% load humanize %}
 <html>
 <head>
@@ -10,17 +10,19 @@
     {% include "store/partials/styles.html" %}
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
-<div class="content">
-    {% block content %}{% endblock %}
-</div>
+    <!-- Giữ nguyên content của bạn -->
+    <main class="flex-fill">
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
 
-<!-- ✅ THÊM DÒNG NÀY (KHÔNG XÓA GÌ KHÁC) -->
-{% include "store/partials/cart_modal.html" %}
-
-{% include "store/partials/footer.html" %}
-{% include "store/partials/scripts.html" %}
+    <!-- KHÔNG XÓA GÌ – giữ nguyên -->
+    {% include "store/partials/cart_modal.html" %}
+    {% include "store/partials/footer.html" %}
+    {% include "store/partials/scripts.html" %}
 
 </body>
 </html>
