@@ -1,0 +1,131 @@
+﻿<!-- BOOTSTRAP -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let cart = [];
+
+function addToCart(id, name, price){
+    price = Number(price);
+
+    let item = cart.find(p => p.id === id);
+    if(item){
+        item.quantity += 1;
+    } else {
+        cart.push({id, name, price, quantity:1});
+    }
+    renderCart();
+}
+
+function renderCart(){
+    let html = "";
+    let total = 0;
+    let count = 0;
+
+    cart.forEach(item => {
+        total += item.price * item.quantity;
+        count += item.quantity;
+
+        html += `
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                    <strong>${item.name}</strong><br>
+                    SL:
+                    <input type="number" value="${item.quantity}" min="1"
+                        style="width:60px"
+                        onchange="updateQuantity(${item.id}, this.value)">
+                </div>
+                <div>${(item.price * item.quantity).toLocaleString()} VND</div>
+            </div>
+        `;
+    });
+
+    // ✅ Không để JS crash nếu chưa có modal
+    let cartItems = document.getElementById("cartItems");
+    let totalPrice = document.getElementById("cartTotal");   // sửa đúng ID
+    let cartCount = document.getElementById("cartCount");
+
+    if(cartItems) cartItems.innerHTML = html;
+    if(totalPrice) totalPrice.innerText = total.toLocaleString();
+    if(cartCount) cartCount.innerText = count;
+}
+
+function updateQuantity(id, qty){
+    let item = cart.find(p => p.id === id);
+    if(item){
+        item.quantity = parseInt(qty);
+        renderCart();
+    }
+}
+
+function openCart(){
+    renderCart();
+    let modalEl = document.getElementById('cartModal');
+    if(modalEl){
+        new bootstrap.Modal(modalEl).show();
+    }
+}
+
+function checkout(){
+
+    let name = document.getElementById("customerName");
+    let address = document.getElementById("customerAddress");
+    let note = document.getElementById("customerNote");
+
+    if(!name || name.value.trim() === ""){
+        alert("Vui lòng nhập tên người đặt!");
+        return;
+    }
+
+    if(!address || address.value.trim() === ""){
+        alert("Vui lòng nhập địa chỉ!");
+        return;
+    }
+
+    if(cart.length === 0){
+        alert("Giỏ hàng đang trống!");
+        return;
+    }
+
+    fetch("/checkout/", {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json",
+            "X-CSRFToken":"{{ csrf_token }}"
+        },
+        body: JSON.stringify({
+            cart: cart,
+            customer_name: name.value,
+            address: address.value,
+            note: note ? note.value : ""
+        })
+    }).then(res => {
+        alert("Đặt hàng thành công!");
+        location.reload();
+    });
+}
+</script>
+
+{% include 'store/image_modal.html' %}
+
+<script>
+const banners = [
+    "/media/banner/banner1.jpg",
+    "/media/banner/banner2.jpg",
+    "/media/banner/banner3.jpg",
+    "/media/banner/banner4.jpg",
+    "/media/banner/banner5.jpg",
+    "/media/banner/banner6.jpg",
+    "/media/banner/banner7.jpg"
+];
+
+const today = new Date();
+const dayNumber = today.getDate(); 
+const index = dayNumber % banners.length;
+
+let bannerEl = document.getElementById("dailyBanner");
+if(bannerEl){
+    bannerEl.src = banners[index];
+}
+</script>
+
+{% include 'store/chat_widget.html' %}

@@ -1,0 +1,25 @@
+﻿<div class="top-left-box">
+    <div class="category-card">
+        <div class="category-header">
+            Danh mục
+        </div>
+
+        <ul class="category-list">
+            {% for c in categories %}
+            <li>
+                <a href="?category={{ c.id }}" class="category-item">
+                    🧋 {{ c.name }}
+                </a>
+            </li>
+            {% endfor %}
+
+            <li class="divider"></li>
+
+            <li>
+                <a href="/" class="category-item all-item">
+                    🔎 Tất cả sản phẩm
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

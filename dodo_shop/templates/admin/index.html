@@ -1,0 +1,140 @@
+﻿{% extends "admin/base_site.html" %}
+
+{% block content %}
+
+<div style="display:flex; gap:40px; align-items:flex-start;">
+
+    <div style="flex:1;">
+        {{ block.super }}
+    </div>
+
+    <div style="flex:1;">
+        <div style="
+            background:white;
+            padding:30px;
+            border-radius:16px;
+            box-shadow:0 0px 20px rgba(0,0,0,0.12);
+            text-align:center;
+        ">
+            <h2 style="margin-bottom:20px; color:#198754;">
+                🏪 Website bán hàng
+            </h2>
+
+            <a href="/"
+               style="
+                display:block;
+                background:linear-gradient(135deg,#28a745,#20c997);
+                color:white;
+                padding:20px;
+                border-radius:50px;
+                text-decoration:none;
+                font-size:20px;
+                font-weight:bold;
+                transition:0.3s;
+                box-shadow:0 4px 12px rgba(0,0,0,0.2);
+               "
+               onmouseover="this.style.transform='scale(1.08)'"
+               onmouseout="this.style.transform='scale(1)'"
+            >
+                🏠 VỀ TRANG HOME
+            </a>
+
+            <p style="margin-top:15px; font-size:14px; color:#666;">
+                Truy cập nhanh website bán hàng của bạn
+            </p>
+        </div>
+    </div>
+
+</div>
+
+
+<div style="
+    margin-top:40px;
+    background:white;
+    padding:30px;
+    border-radius:16px;
+    box-shadow:0 0px 20px rgba(0,0,0,0.12);
+">
+
+    <h2 style="margin-bottom:20px; color:#dc3545;">
+        🧾 ĐƠN HÀNG MỚI
+    </h2>
+
+    <table style="width:100%; border-collapse:collapse; font-size:14px;">
+        <thead style="background:#343a40; color:white;">
+            <tr>
+                <th style="padding:10px;">Mã</th>
+                <th>Thông tin đơn hàng</th>
+                <th>Tổng tiền</th>
+                <th>Thanh toán</th>
+                <th>Note</th>
+                <th>Xóa</th>
+                <th>Ngày</th>
+                <th>Hoàn thành</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in recent_orders %}
+            <tr style="border-bottom:1px solid #ddd; {% if not order.is_prepared %}background:#fff5f5;{% endif %}">
+                
+                <td style="padding:10px;">#{{ order.id }}</td>
+
+                <td>
+                    <strong>{{ order.customer_name }}</strong>
+                    <div style="font-size:12px; margin-top:5px; color:#555;">
+                        {% for item in order.orderitem_set.all %}
+                            • {{ item.product.name }} (x{{ item.quantity }})<br>
+                        {% endfor %}
+                    </div>
+                </td>
+
+                <td style="color:red; font-weight:bold;">
+                    {{ order.total_price }} VND
+                </td>
+
+                <td>{{ order.get_payment_method_display }}</td>
+
+                <td>
+                    <a href="/admin/store/order/{{ order.id }}/change/"
+                       style="color:#0d6efd; text-decoration:none; font-weight:bold;">
+                        ✏️ Ghi chú
+                    </a>
+                </td>
+
+                <td>
+                    <a href="/admin/store/order/{{ order.id }}/delete/"
+                       style="color:red; font-weight:bold; text-decoration:none;"
+                       onclick="return confirm('Bạn chắc chắn muốn xóa đơn này?');">
+                        🗑️ Xóa
+                    </a>
+                </td>
+
+                <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+
+                <!-- ✅ CỘT DẤU TÍCH (BẤM ĐƯỢC CẢ 2 TRẠNG THÁI) -->
+                <td style="text-align:center; font-size:18px;">
+                    <a href="{% url 'store:mark_done' order.id %}"
+                       style="text-decoration:none; font-weight:bold;
+                              color:{% if order.is_prepared %}green{% else %}red{% endif %};">
+                        {% if order.is_prepared %}
+                            ✔
+                        {% else %}
+                            ☐
+                        {% endif %}
+                    </a>
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" style="padding:20px; text-align:center;">
+                    Chưa có đơn hàng
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

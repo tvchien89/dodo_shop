@@ -1,0 +1,45 @@
+﻿<div class="top-right-box">
+
+    <!-- GIỎ HÀNG -->
+    <div class="shopee-cart" onclick="openCart()">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="28" height="28"
+             fill="black"
+             viewBox="0 0 16 16">
+          <path d="M0 1.5A.5.5 0 0 1 .5 1h1a.5.5 0 0 1 .49.402L2.89 5H14.5a.5.5 0 0 1 .49.598l-1.5 7A.5.5 0 0 1 13 13H4a.5.5 0 0 1-.49-.402L1.01 2H.5a.5.5 0 0 1-.5-.5z"/>
+        </svg>
+        <span id="cartCount" class="cart-badge">0</span>
+    </div>
+
+    {% if user.is_authenticated %}
+
+        <!-- TÊN ADMIN + THÔNG BÁO -->
+        <div style="position:relative; display:inline-block; margin-right:8px;">
+
+            <span class="fw-bold text-success">
+                👑 {{ user.username }}
+            </span>
+
+            {% if new_orders_count > 0 %}
+                <span class="order-badge">
+                    {{ new_orders_count }}
+                </span>
+            {% endif %}
+
+        </div>
+
+        <a href="/admin/" class="btn btn-outline-success btn-sm rounded-pill">
+            Trang quản trị
+        </a>
+
+        <a href="{% url 'store:logout' %}" class="btn btn-danger btn-sm rounded-pill">
+            Đăng xuất
+        </a>
+
+    {% else %}
+        <a href="{% url 'store:login' %}" class="btn btn-success rounded-pill">
+            🔐 Đăng nhập Admin
+        </a>
+    {% endif %}
+
+</div>

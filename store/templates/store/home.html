@@ -1,0 +1,15 @@
+﻿{% extends "store/base.html" %}
+
+{% block content %}
+
+{% include "store/partials/banner.html" %}
+
+<div class="container mt-4">
+    {% include "store/partials/marquee.html" %}
+    {% include "store/partials/search.html" %}
+</div>
+
+{% include "store/partials/products.html" %}
+{% include "store/partials/cart_modal.html" %}
+
+{% endblock %}

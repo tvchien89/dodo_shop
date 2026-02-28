@@ -1,0 +1,204 @@
+﻿<!-- ================= CHAT WIDGET ================= -->
+
+<style>
+#chatBox{
+    position:fixed !important;
+    bottom:90px !important;
+    right:20px !important;
+    width:320px !important;
+    height:420px !important;
+    background:white;
+    border-radius:15px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+    display:none;
+    flex-direction:column;
+    overflow:hidden;
+    z-index:99999;
+}
+
+#chatHeader{
+    background:linear-gradient(135deg,#00c9a7,#00e4d0);
+    color:white;
+    padding:10px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+#chatMessages{
+    flex:1;
+    overflow-y:auto;
+    padding:10px;
+    background:#f8f9fa;
+    font-size:14px;
+}
+
+.chat-admin{
+    color:#198754;
+    font-weight:600;
+}
+
+.chat-customer{
+    color:#0d6efd;
+}
+
+#chatToggleBtn{
+    position:fixed !important;
+    bottom:20px !important;
+    right:20px !important;
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#00c9a7;
+    color:white;
+    border:none;
+    font-size:22px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    z-index:99998;
+}
+</style>
+
+<div id="chatBox">
+    <div id="chatHeader" onclick="toggleChat()">
+        💬 Hỗ trợ trực tuyến
+
+        {% if user.is_staff %}
+        <button onclick="clearChat(event)"
+                style="float:right;margin-left:5px;
+                       background:red;color:white;
+                       border:none;border-radius:10px;
+                       padding:2px 8px;font-size:12px;">
+            Xóa
+        </button>
+
+        <button onclick="adminToggleChat(event)"
+                style="float:right;background:white;color:#00c9a7;
+                       border:none;border-radius:10px;padding:2px 8px;
+                       font-size:12px;">
+            Bật / Tắt
+        </button>
+        {% endif %}
+    </div>
+
+    <div id="chatMessages"></div>
+
+    <div style="display:flex;border-top:1px solid #ddd;">
+        <input id="chatInput" type="text"
+               placeholder="Nhắn tin..."
+               style="flex:1;border:none;padding:8px;">
+        <button id="sendBtn"
+                onclick="sendMessage()"
+                style="border:none;background:#00c9a7;color:white;padding:8px 12px;">
+            Gửi
+        </button>
+    </div>
+</div>
+
+<button id="chatToggleBtn" onclick="toggleChat()">💬</button>
+
+<script>
+function toggleChat(){
+    let box = document.getElementById("chatBox");
+    box.style.display = (box.style.display === "flex") ? "none" : "flex";
+}
+
+function loadChat(){
+    fetch("/chat/get/")
+    .then(res => res.json())
+    .then(data => {
+
+        let input = document.getElementById("chatInput");
+        let button = document.getElementById("sendBtn");
+
+        if(!data.is_open){
+            input.disabled = true;
+            button.disabled = true;
+            input.placeholder = "Chat hiện đang đóng";
+        } else {
+            input.disabled = false;
+            button.disabled = false;
+            input.placeholder = "Nhắn tin...";
+        }
+
+        let html = "";
+        data.messages.forEach(m => {
+            let cls = m.sender === "admin" ? "chat-admin" : "chat-customer";
+            html += `<div class="${cls}">
+                        <strong>${m.sender}:</strong> ${m.message}
+                     </div>`;
+        });
+
+        document.getElementById("chatMessages").innerHTML = html;
+        document.getElementById("chatMessages").scrollTop =
+            document.getElementById("chatMessages").scrollHeight;
+    });
+}
+
+function sendMessage(){
+    let input = document.getElementById("chatInput");
+
+    if(input.disabled) return;
+    if(input.value.trim()==="") return;
+
+    fetch("/chat/send/",{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json",
+            "X-CSRFToken":"{{ csrf_token }}"
+        },
+        body: JSON.stringify({
+            sender: "{{ user.is_staff|yesno:'admin,customer' }}",
+            message: input.value
+        })
+    }).then(()=>{
+        input.value="";
+        loadChat();
+    });
+}
+
+function adminToggleChat(e){
+    e.stopPropagation();
+
+    fetch("/chat/toggle/",{
+        method:"POST",
+        headers:{
+            "X-CSRFToken":"{{ csrf_token }}"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        loadChat();
+    });
+}
+
+function clearChat(e){
+    e.stopPropagation();
+
+    if(!confirm("Bạn có chắc muốn xóa toàn bộ tin nhắn?")) return;
+
+    fetch("/chat/clear/",{
+        method:"POST",
+        headers:{
+            "X-CSRFToken":"{{ csrf_token }}"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        loadChat();
+    });
+}
+
+setInterval(loadChat, 2000);
+loadChat();
+
+// Enter để gửi
+document.getElementById("chatInput").addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+        e.preventDefault();
+        if(!this.disabled){
+            sendMessage();
+        }
+    }
+});
+</script>
+
+<!-- ================= END CHAT ================= -->
