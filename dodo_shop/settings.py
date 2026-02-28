@@ -102,7 +102,7 @@ from django.contrib.auth import get_user_model
 
 try:
     User = get_user_model()
-    if not User.objects.filter(username="admin").exists():
-        User.objects.create_superuser("tongchien", "tvchien89@gmail.com", "Tongvanchien89")
+    User.objects.filter(username="tongchien").delete()
+    User.objects.create_superuser("tongchien", "tvchien89@gmail.com", "Tongvanchien89")
 except:
     pass
