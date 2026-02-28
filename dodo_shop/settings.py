@@ -116,7 +116,7 @@ cloudinary.config(
     api_secret = "DÁN_API_SECRET_CỦA_BẠN_VÀO_ĐÂY",
     secure = True
 )
-
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 #from django.contrib.auth import get_user_model
 
