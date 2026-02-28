@@ -7,10 +7,10 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ================= MEDIA FIX =================
+# ============== MEDIA FIX ===============
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-# =============================================
+MEDIA_ROOT = '/opt/render/project/src/media'
+# ========================================
 
 SECRET_KEY = 'django-insecure-=)x_7i16w)8bkhbb1(y6y79xr57rh$s1_+-x08e91pl^g!j(=h'
 
