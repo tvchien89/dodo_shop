@@ -9,6 +9,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ============== MEDIA FIX ===============
+# Giữ lại để tránh lỗi, nhưng không dùng khi deploy Cloudinary
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # ========================================
@@ -17,7 +18,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['dodo-shop.onrender.com']
+ALLOWED_HOSTS = ['dodo-shop.onrender.com', '.onrender.com']
 
 
 INSTALLED_APPS = [
@@ -91,18 +92,25 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
+
 # ================= CLOUDINARY FIX =================
 
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-# Dùng CLOUDINARY_URL từ Render (đã có trong Environment)
-cloudinary.config(secure=True)
+# Nếu có CLOUDINARY_URL trong Render thì dùng tự động
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+    secure=True
+)
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ==================================================
+
 
 #from django.contrib.auth import get_user_model
 
