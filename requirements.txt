@@ -5,13 +5,8 @@ django-carton==1.2.1
 Pillow
 dj-database-url==3.1.2
 psycopg2-binary==2.9.9
-
 cloudinary==1.41.0
 django-cloudinary-storage==0.3.0
-<<<<<<< HEAD
-
-
-
 cloudinary
 django-cloudinary-storage
 
