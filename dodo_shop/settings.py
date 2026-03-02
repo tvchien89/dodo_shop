@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'cloudinary',
+    'cloudinary_storage',
     'store',
 ]
 
@@ -95,18 +97,38 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-<<<<<<< HEAD
+
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+
+
+
+import os
 from django.contrib.auth import get_user_model
 
-try:
-    User = get_user_model()
-    User.objects.filter(username="tongchien").delete()
-    User.objects.create_superuser("tongchien", "tvchien89@gmail.com", "Tongvanchien89")
-except:
-    pass
-=======
-STATIC_ROOT = BASE_DIR / 'staticfiles'
->>>>>>> a7f0e0bea26b14b3f2c6393ed2959743521440e3
+if os.environ.get("CREATE_SUPERUSER") == "1":
+    try:
+        User = get_user_model()
+        if not User.objects.filter(username="admin").exists():
+            User.objects.create_superuser(
+                "admin",
+                "tvchien89@gmail.com",
+                "Tongvanchien89"
+            )
+    except:
+        pass
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'TEN_CLOUD_NAME',
+    'API_KEY': 'TEN_API_KEY',
+    'API_SECRET': 'TEN_API_SECRET',
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
