@@ -19,3 +19,5 @@ sqlparse==0.5.5
 tzdata==2025.2
 urllib3==2.5.0
 xlwings==0.33.16
+loudinary==1.41.0
+django-cloudinary-storage==0.3.0
