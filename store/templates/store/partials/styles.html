@@ -238,39 +238,29 @@ body{
     border:none;
 }
 
-//* ===== MOBILE ===== */
+/* ===== MOBILE FIX ===== */
 @media (max-width:768px){
 
-    .top-left-box{
-        position:absolute;
-        top:10px;
-        left:10px;
-        z-index:10;
-        transform:scale(0.85);
-    }
-
+    .top-left-box,
     .top-right-box{
-        position:absolute;
-        top:10px;
-        right:10px;
-        z-index:10;
+        position:static !important;   /* 🔥 BỎ absolute */
+        transform:none !important;
+        margin-bottom:15px;
         display:flex;
-        align-items:center;
-        gap:5px;
-        flex-wrap:nowrap;   /* 🔥 QUAN TRỌNG */
-    }
-
-    .top-right-box .btn{
-        padding:3px 8px;
-        font-size:11px;
-    }
-
-    .top-right-box span{
-        font-size:12px;
+        justify-content:center;
     }
 
     .category-card{
-        width:190px;
+        width:100%;
+        max-width:320px;
+    }
+
+    .banner-wrapper{
+        margin-top:10px;
+    }
+
+    .search-box{
+        padding:15px;
     }
 
 }
