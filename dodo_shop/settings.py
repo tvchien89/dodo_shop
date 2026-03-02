@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'store',
     'cloudinary',
     'cloudinary_storage',
+    "jazzmin",
+    "django.contrib.admin",
 ]
 
 MIDDLEWARE = [
