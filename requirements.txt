@@ -1,4 +1,4 @@
-Django==3.2.23
+Django==4.2.11
 gunicorn==23.0.0
 whitenoise==6.5.0
 django-carton==1.2.1
@@ -8,6 +8,9 @@ psycopg2-binary==2.9.9
 
 cloudinary==1.41.0
 django-cloudinary-storage==0.3.0
+<<<<<<< HEAD
+
+
 
 cloudinary
 django-cloudinary-storage
