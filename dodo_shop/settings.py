@@ -22,7 +22,7 @@ ALLOWED_HOSTS = ['dodo-shop.onrender.com', '.onrender.com']
 
 
 INSTALLED_APPS = [
-    "jazzmin",
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
