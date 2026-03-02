@@ -22,3 +22,4 @@ xlwings==0.33.16
 cloudinary
 django-cloudinary-storage
 psycopg2-binary
+whitenoise
