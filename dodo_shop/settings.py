@@ -102,7 +102,7 @@ import cloudinary.api
 # Sử dụng trực tiếp CLOUDINARY_URL đã khai báo trong Render
 cloudinary.config(secure=True)
 
-#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ==================================================
 
