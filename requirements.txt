@@ -22,3 +22,4 @@ cloudinary
 django-cloudinary-storage
 psycopg2-binary
 whitenoise
+gunicorn
