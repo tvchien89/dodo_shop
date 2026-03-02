@@ -97,10 +97,8 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-# Cloudinary sẽ tự đọc từ biến môi trường CLOUDINARY_URL trên Render
-cloudinary.config(
-    secure=True
-)
+# Dùng CLOUDINARY_URL từ Render (đã có trong Environment)
+cloudinary.config(secure=True)
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 

@@ -1,26 +1,31 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 {% load humanize %}
-<html>
+<html lang="vi">
 <head>
     <title>Đô Đô - Trà sữa & Ăn vặt</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     {% include "store/partials/styles.html" %}
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
-<div class="content">
-    {% block content %}{% endblock %}
-</div>
+    <!-- GIỮ nguyên content của bạn -->
+    <main class="flex-fill d-flex flex-column">
 
-<!-- ✅ THÊM DÒNG NÀY (KHÔNG XÓA GÌ KHÁC) -->
-{% include "store/partials/cart_modal.html" %}
+        <div class="content flex-fill">
+            {% block content %}{% endblock %}
+        </div>
 
-{% include "store/partials/footer.html" %}
-{% include "store/partials/scripts.html" %}
+    </main>
+
+    <!-- KHÔNG XÓA GÌ - giữ nguyên -->
+    {% include "store/partials/cart_modal.html" %}
+    {% include "store/partials/footer.html" %}
+    {% include "store/partials/scripts.html" %}
 
 </body>
 </html>
