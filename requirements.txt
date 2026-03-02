@@ -21,3 +21,4 @@ urllib3==2.5.0
 xlwings==0.33.16
 cloudinary
 django-cloudinary-storage
+psycopg2-binary
