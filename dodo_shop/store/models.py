@@ -19,6 +19,11 @@ class Product(models.Model):
     quantity = models.IntegerField()
     note = models.TextField(blank=True)
 
+    # ✅ FIX LỖI: thêm property price_m để không cần sửa template
+    @property
+    def price_m(self):
+        return self.price
+
     def __str__(self):
         return self.name
 
@@ -73,6 +78,7 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.message
+
 
 # ================== CHAT ==================
 class ChatMessage(models.Model):
