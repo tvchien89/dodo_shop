@@ -9,18 +9,15 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ============== MEDIA FIX ===============
-# Giữ nguyên để không lỗi local, nhưng production sẽ dùng Cloudinary
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # ========================================
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key')
 
-#DEBUG = False
-# SỬA: đọc DEBUG từ môi trường để không lỗi production
+# DEBUG đọc từ môi trường
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-#ALLOWED_HOSTS = ['dodo-shop.onrender.com', '.onrender.com']
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
@@ -40,7 +37,6 @@ INSTALLED_APPS = [
     'store',
     'cloudinary',
     'cloudinary_storage',
-    
 ]
 
 MIDDLEWARE = [
@@ -74,9 +70,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dodo_shop.wsgi.application'
 
-#DATABASES = {
-#    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
-#}
+# ================= DATABASE =================
 
 if DEBUG:
     DATABASES = {
@@ -86,7 +80,6 @@ if DEBUG:
         }
     }
 else:
-    # SỬA: thêm SSL + conn_max_age cho Render PostgreSQL
     DATABASES = {
         'default': dj_database_url.config(
             default=os.environ.get('DATABASE_URL'),
@@ -95,6 +88,7 @@ else:
         )
     }
 
+# ============================================
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -109,11 +103,14 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+# ================= STATIC =================
+
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# SỬA: dùng Manifest storage để không lỗi 502 static
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
+
+# ==========================================
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -122,36 +119,24 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # ================= SECURITY FIX =================
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CSRF_TRUSTED_ORIGINS = ['https://dodo-shop.onrender.com']
+
 # =================================================
 
 
 # ================= CLOUDINARY FIX =================
+
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
-cloudinary.config(secure=True)
+cloudinary.config(
+    cloudinary_url=os.environ.get("CLOUDINARY_URL"),
+    secure=True
+)
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-#import cloudinary
-#import cloudinary.uploader
-#import cloudinary.api
-
-# Sử dụng trực tiếp CLOUDINARY_URL đã khai báo trong Render
-#cloudinary.config(secure=True)
-
-#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ==================================================
-
-
-# from django.contrib.auth import get_user_model
-
-# try:
-#     User = get_user_model()
-#     User.objects.filter(username="tongchien").delete()
-#     User.objects.create_superuser("tongchien", "tvchien89@gmail.com", "Tongvanchien89")
-# except:
-#     pass
