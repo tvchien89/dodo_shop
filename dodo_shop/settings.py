@@ -15,9 +15,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key')
 
-# DEBUG đọc từ môi trường
-#DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-DEBUG = True
+# DEBUG đọc từ môi trường (SỬA LẠI ĐÚNG PRODUCTION)
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
@@ -71,23 +71,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'dodo_shop.wsgi.application'
 
 # ================= DATABASE =================
+# SỬA: luôn dùng DATABASE_URL của Render (không dùng SQLite trên production)
 
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
-            conn_max_age=600,
-            ssl_require=True
-        )
-    }
-
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True
+    )
+}
 # ============================================
 
 AUTH_PASSWORD_VALIDATORS = [
