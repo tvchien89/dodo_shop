@@ -16,8 +16,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key')
 
 # DEBUG đọc từ môi trường
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-
+#DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
