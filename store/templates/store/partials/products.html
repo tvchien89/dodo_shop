@@ -17,9 +17,30 @@
                 {% endif %}
 
                 <!-- ✓ GIÁ ĐƯA LÊN NGAY DƯỚI ẢNH -->
-                <div class="text-center text-danger fw-bold mt-2">
+                <div class="text-center text-danger fw-bold mt-2"
+                     id="price-{{ p.id }}">
                     {{ p.price|intcomma }} VND
                 </div>
+
+                <!-- ======= SIZE M / L (TỰ ẨN NẾU KHÔNG CÓ) ======= -->
+                {% if p.price_m or p.price_l %}
+                <div class="text-center mt-2">
+                    {% if p.price_m %}
+                    <button class="btn btn-outline-primary btn-sm me-1"
+                            onclick="selectSize({{ p.id }}, 'M', {{ p.price_m }})">
+                        Size M
+                    </button>
+                    {% endif %}
+
+                    {% if p.price_l %}
+                    <button class="btn btn-outline-warning btn-sm"
+                            onclick="selectSize({{ p.id }}, 'L', {{ p.price_l }})">
+                        Size L
+                    </button>
+                    {% endif %}
+                </div>
+                {% endif %}
+                <!-- ================================================= -->
 
                 <div class="card-body text-center pt-2">
                     <h5 class="fw-bold">{{ p.name }}</h5>
@@ -27,7 +48,7 @@
                     <!-- GIỮ NGUYÊN JAVASCRIPT -->
                     <button type="button"
                             class="btn btn-success rounded-pill px-4"
-                            onclick="addToCart({{ p.id }}, '{{ p.name|escapejs }}', {{ p.price }})">
+                            onclick="addToCartWithSize({{ p.id }}, '{{ p.name|escapejs }}', {{ p.price }})">
                         🛒 Thêm vào giỏ
                     </button>
 
@@ -37,3 +58,28 @@
         {% endfor %}
     </div>
 </div>
+
+<!-- ================= JAVASCRIPT THÊM SIZE ================= -->
+<script>
+
+let selectedSizes = {};
+let selectedPrices = {};
+
+function selectSize(productId, size, price) {
+
+    selectedSizes[productId] = size;
+    selectedPrices[productId] = price;
+
+    document.getElementById("price-" + productId).innerText =
+        price.toLocaleString() + " VND";
+}
+
+function addToCartWithSize(id, name, defaultPrice) {
+
+    let finalPrice = selectedPrices[id] ? selectedPrices[id] : defaultPrice;
+    let size = selectedSizes[id] ? selectedSizes[id] : "";
+
+    addToCart(id, name + (size ? " - Size " + size : ""), finalPrice);
+}
+
+</script>

@@ -15,9 +15,14 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     image = models.ImageField(upload_to='products/')
-    price = models.IntegerField()
+    price = models.IntegerField()  # Giá mặc định (không size)
     quantity = models.IntegerField()
     note = models.TextField(blank=True)
+
+    # ======= THÊM SIZE M, L (KHÔNG ẢNH HƯỞNG DỮ LIỆU CŨ) =======
+    price_m = models.IntegerField(blank=True, null=True)
+    price_l = models.IntegerField(blank=True, null=True)
+    # =============================================================
 
     def __str__(self):
         return self.name
@@ -61,6 +66,10 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
+    # ======= LƯU SIZE KHÁCH CHỌN =======
+    size = models.CharField(max_length=2, blank=True, null=True)
+    # ====================================
+
     def __str__(self):
         return f"{self.product.name} x {self.quantity}"
 
@@ -73,6 +82,7 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.message
+
 
 # ================== CHAT ==================
 class ChatMessage(models.Model):
