@@ -96,6 +96,9 @@
 <button id="chatToggleBtn" onclick="toggleChat()">💬</button>
 
 <script>
+
+let lastMessageCount = 0; // ⭐ thêm biến để kiểm tra tin nhắn mới
+
 function toggleChat(){
     let box = document.getElementById("chatBox");
     box.style.display = (box.style.display === "flex") ? "none" : "flex";
@@ -130,6 +133,18 @@ function loadChat(){
         document.getElementById("chatMessages").innerHTML = html;
         document.getElementById("chatMessages").scrollTop =
             document.getElementById("chatMessages").scrollHeight;
+
+        /* ===== THÊM THÔNG BÁO TIN NHẮN MỚI ===== */
+        if(data.messages.length > lastMessageCount){
+            let lastMsg = data.messages[data.messages.length - 1];
+            if(lastMsg.sender === "admin" || lastMsg.sender === "customer"){
+                if(typeof newChatMessage === "function"){
+                    newChatMessage(lastMsg.message);
+                }
+            }
+        }
+        lastMessageCount = data.messages.length;
+
     });
 }
 
