@@ -39,9 +39,8 @@ function renderCart(){
         `;
     });
 
-    // ✅ Không để JS crash nếu chưa có modal
     let cartItems = document.getElementById("cartItems");
-    let totalPrice = document.getElementById("cartTotal");   // sửa đúng ID
+    let totalPrice = document.getElementById("cartTotal");
     let cartCount = document.getElementById("cartCount");
 
     if(cartItems) cartItems.innerHTML = html;
@@ -161,5 +160,38 @@ function newChatMessage(text){
         popup.remove();
     },5000);
 }
+
+/* ===== SỬA LỖI: TỰ KIỂM TRA TIN NHẮN MỚI ===== */
+
+let lastMessageId = 0;
+
+function checkNewMessages(){
+
+    fetch("/chat/messages/")
+    .then(res => res.json())
+    .then(data => {
+
+        if(!data.messages) return;
+
+        data.messages.forEach(m => {
+
+            if(m.id > lastMessageId){
+
+                lastMessageId = m.id;
+
+                if(m.sender === "admin"){
+                    newChatMessage(m.message);
+                }
+
+            }
+
+        });
+
+    })
+    .catch(()=>{});
+}
+
+/* kiểm tra mỗi 5 giây */
+setInterval(checkNewMessages, 5000);
 
 </script>
