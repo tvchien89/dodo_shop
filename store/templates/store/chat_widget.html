@@ -1,4 +1,4 @@
-﻿<!-- ================= CHAT WIDGET ================= -->
+<!-- ================= CHAT WIDGET ================= -->
 
 <style>
 #chatBox{
@@ -191,12 +191,17 @@ setInterval(loadChat, 2000);
 loadChat();
 
 // Enter để gửi
-document.getElementById("chatInput").addEventListener("keydown", function(e){
-    if(e.key === "Enter"){
-        e.preventDefault();
-        if(!this.disabled){
-            sendMessage();
-        }
+document.addEventListener("DOMContentLoaded", function(){
+    let input = document.getElementById("chatInput");
+    if(input){
+        input.addEventListener("keydown", function(e){
+            if(e.key === "Enter"){
+                e.preventDefault();
+                if(!this.disabled){
+                    sendMessage();
+                }
+            }
+        });
     }
 });
 </script>
