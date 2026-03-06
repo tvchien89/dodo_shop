@@ -55,6 +55,25 @@
     box-shadow:0 5px 15px rgba(0,0,0,0.3);
     z-index:99998;
 }
+
+/* ===== BADGE SỐ TIN NHẮN ===== */
+#chatBadge{
+    position:absolute;
+    top:-5px;
+    right:-5px;
+    background:red;
+    color:white;
+    font-size:12px;
+    min-width:18px;
+    height:18px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0 4px;
+    font-weight:bold;
+    display:none;
+}
 </style>
 
 <div id="chatBox">
@@ -93,15 +112,39 @@
     </div>
 </div>
 
-<button id="chatToggleBtn" onclick="toggleChat()">💬</button>
+<div style="position:fixed;bottom:20px;right:20px;z-index:99998;">
+    <button id="chatToggleBtn" onclick="toggleChat()">💬</button>
+    <div id="chatBadge">0</div>
+</div>
 
 <script>
 
-let lastMessageCount = 0; // ⭐ thêm biến để kiểm tra tin nhắn mới
+let lastMessageCount = 0;
+let unreadCount = 0;
 
 function toggleChat(){
     let box = document.getElementById("chatBox");
-    box.style.display = (box.style.display === "flex") ? "none" : "flex";
+
+    if(box.style.display === "flex"){
+        box.style.display = "none";
+    }else{
+        box.style.display = "flex";
+
+        /* reset unread khi mở chat */
+        unreadCount = 0;
+        updateBadge();
+    }
+}
+
+function updateBadge(){
+    let badge = document.getElementById("chatBadge");
+
+    if(unreadCount > 0){
+        badge.style.display = "flex";
+        badge.innerText = unreadCount;
+    }else{
+        badge.style.display = "none";
+    }
 }
 
 function loadChat(){
@@ -134,15 +177,19 @@ function loadChat(){
         document.getElementById("chatMessages").scrollTop =
             document.getElementById("chatMessages").scrollHeight;
 
-        /* ===== THÊM THÔNG BÁO TIN NHẮN MỚI ===== */
+        /* ===== CHECK TIN NHẮN MỚI ===== */
+
         if(data.messages.length > lastMessageCount){
-            let lastMsg = data.messages[data.messages.length - 1];
-            if(lastMsg.sender === "admin" || lastMsg.sender === "customer"){
-                if(typeof newChatMessage === "function"){
-                    newChatMessage(lastMsg.message);
-                }
+
+            let box = document.getElementById("chatBox");
+
+            if(box.style.display !== "flex"){
+                unreadCount += (data.messages.length - lastMessageCount);
+                updateBadge();
             }
+
         }
+
         lastMessageCount = data.messages.length;
 
     });
@@ -205,7 +252,6 @@ function clearChat(e){
 setInterval(loadChat, 2000);
 loadChat();
 
-// Enter để gửi
 document.addEventListener("DOMContentLoaded", function(){
     let input = document.getElementById("chatInput");
     if(input){
